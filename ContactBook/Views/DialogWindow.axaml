@@ -1,0 +1,45 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:ContactBook.ViewModels"
+        Width="500" Height="500"
+        WindowStartupLocation="CenterOwner"
+        x:Class="ContactBook.Views.DialogWindow"
+        xmlns:actipro="http://schemas.actiprosoftware.com/avaloniaui"
+        xmlns:primitives="clr-namespace:ActiproSoftware.UI.Avalonia.Controls.Primitives;assembly=ActiproSoftware.Avalonia.Shared"
+        x:DataType="vm:DialogWindowViewModel"
+        ExtendClientAreaToDecorationsHint="True"
+        ExtendClientAreaTitleBarHeightHint="0"
+        SystemDecorations="None"
+        CornerRadius="10">
+    
+    <primitives:OverlayInputFilter>
+        <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Border BorderThickness="1" CornerRadius="{actipro:ScaledCornerRadius 4}" MinWidth="500"
+                    Padding="{actipro:ScaledThickness '4 + 20'}">
+	
+                <StackPanel>
+                    <TextBlock Text="Редактирование Контакта" HorizontalAlignment="Center" VerticalAlignment="Top"
+                               FontSize="30" FontWeight="SemiBold"/>
+                
+                    <Border BorderThickness="1" CornerRadius="{actipro:ScaledCornerRadius 1.5}"
+                            Padding="{actipro:ScaledThickness 5}">
+                        <StackPanel Spacing="{actipro:ScaledDouble 1.5}">
+                            <TextBox Watermark="Имя" Text="{Binding Name}"/>
+                            <TextBox Watermark="Фамилия" Text="{Binding LastName}"/>
+                            <MaskedTextBox Classes="has-clear-button"
+                                           Mask="+7 (000) 000-0000" Text="{Binding Number}"
+                                           Watermark="Номер телефона" UseFloatingWatermark="True" />
+                            <TextBox Watermark="Почта" Text="{Binding Email}"/>
+                            <DatePicker Classes="theme-soft" SelectedDate="{Binding DateOfBirth}"/>
+
+                            <UniformGrid Margin="{actipro:ScaledThickness '0, 4.5, 0, 0'}">
+                                <Button Content="Сохранить" Command="{Binding SaveEditContactCommand}" Margin="0 0 5 0"/>
+                                <Button Content="Отменить" Command="{Binding CancelCommand}" Margin="5 0 0 0"/>
+                            </UniformGrid>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </primitives:OverlayInputFilter>
+</Window>

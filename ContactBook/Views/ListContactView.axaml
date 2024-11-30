@@ -1,0 +1,56 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:ContactBook.ViewModels"
+             xmlns:actipro="http://schemas.actiprosoftware.com/avaloniaui"
+             x:DataType="vm:ListContactViewModel"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="550"
+             x:Class="ContactBook.Views.ListContactView">
+    
+   
+    <Grid>
+        <actipro:RingSpinner Width="24" Height="24" VerticalAlignment="Center" HorizontalAlignment="Center" IsVisible="{Binding IsLoad}"
+                             Foreground="#5aabac" LineThickness="12" LineCap="Flat" IsSpinning="True" />
+        
+        <Grid IsVisible="{Binding IsSuccConnect}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            
+            <TextBox Grid.Row="0" Text="{Binding SearchText}" HorizontalAlignment="Center" VerticalAlignment="Top"
+                     Width="300" Margin="0 30 0 0" TextWrapping="Wrap" Watermark="Поиск по имени, фамилии или по почте" TextAlignment="Center"/>
+    
+            <DataGrid Grid.Row="1" Margin="20" ItemsSource="{Binding ContactCollectionView}"
+                      IsReadOnly="True" CanUserReorderColumns="True" CanUserResizeColumns="True" VerticalScrollBarVisibility="Auto"
+                      CanUserSortColumns="True" GridLinesVisibility="All" x:Name="Items">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="ID"  Binding="{Binding Id}"/>
+                    <DataGridTextColumn Header="Имя" Binding="{Binding Name}" />
+                    <DataGridTextColumn Header="Фамилия" Binding="{Binding LastName}" />
+                    <DataGridTextColumn Header="Номер телефона" Binding="{Binding Number}" />
+                    <DataGridTextColumn Header="Почта" Binding="{Binding Email}" />
+                    <DataGridTextColumn Header="Дата рождения" Binding="{Binding Birthday}" />
+                    
+                    <DataGridTemplateColumn>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="5" Margin="10">
+                                    <Button Command="{Binding #Items.((vm:ListContactViewModel)DataContext).EditContactCommand}"
+                                            CommandParameter="{Binding}"
+                                            ContentTemplate="{actipro:GlyphTemplate MarkerTip16}"
+                                            ToolTip.Tip="Редактировать"/>
+                                    
+                                    <Button Command="{Binding #Items.((vm:ListContactViewModel)DataContext).DeleteContactCommand}"
+                                            CommandParameter="{Binding}" ContentTemplate="{actipro:GlyphTemplate XMark16}"
+                                            ToolTip.Tip="Удалить"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+    </Grid>
+</UserControl>

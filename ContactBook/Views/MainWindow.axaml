@@ -1,0 +1,85 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:ContactBook.ViewModels"
+        Width="1200" Height="800"
+        MinWidth="800" MinHeight="480"
+        WindowStartupLocation="CenterScreen"
+        x:Class="ContactBook.Views.MainWindow"
+        xmlns:actipro="http://schemas.actiprosoftware.com/avaloniaui"
+        xmlns:primitives="clr-namespace:ActiproSoftware.UI.Avalonia.Controls.Primitives;assembly=ActiproSoftware.Avalonia.Shared"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="Contact Book">
+
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+     <DockPanel>
+		<actipro:ChromedTitleBar DockPanel.Dock="Top">
+			<actipro:ChromedTitleBar.Resources>
+				<actipro:ComparisonConverter x:Key="RightContentMarginConverter">
+					<actipro:ComparisonConverter.TrueResult>
+						<Thickness>0,0,0,0</Thickness>
+					</actipro:ComparisonConverter.TrueResult>
+					<actipro:ComparisonConverter.FalseResult>
+						<Thickness>10,10,10,10</Thickness>
+					</actipro:ComparisonConverter.FalseResult>
+				</actipro:ComparisonConverter>
+			</actipro:ChromedTitleBar.Resources>
+			
+			<actipro:ChromedTitleBar.LeftContent>
+				<primitives:OverlayInputFilter>
+					<StackPanel Orientation="Horizontal">
+						<StackPanel Margin="10,7,0,7" VerticalAlignment="Center" IsHitTestVisible="False">
+							<TextBlock Text="Contact Book" FontSize="12" TextTrimming="CharacterEllipsis" Opacity="0.85" />
+							<TextBlock Margin="0,-2,0,0" Text="{Binding TitleText}" FontSize="18" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" />
+						</StackPanel>
+					</StackPanel>
+				</primitives:OverlayInputFilter>
+			</actipro:ChromedTitleBar.LeftContent>
+			
+			<actipro:ChromedTitleBar.RightContent>
+				<primitives:OverlayInputFilter>
+					<StackPanel Margin="{Binding $parent[actipro:ChromedTitleBar].HasCaptionButtons, Converter={StaticResource RightContentMarginConverter}}" Orientation="Horizontal">
+						<Button ContentTemplate="{actipro:GlyphTemplate Refresh16}"
+						        Command="{Binding }"
+						        Theme="{actipro:ControlTheme TitleBarButton}"
+						        ToolTip.Tip="Переподключение"/>
+						
+						<Button ContentTemplate="{actipro:GlyphTemplate UpFolder16}"
+						        Command="{Binding AddContactViewCommand}"
+						        Theme="{actipro:ControlTheme TitleBarButton}"
+						        ToolTip.Tip="Добавить контакт"/>
+						
+						<Button ContentTemplate="{actipro:GlyphTemplate Home16}" 
+						        Command="{Binding ListContactViewCommand}"
+						        Theme="{actipro:ControlTheme TitleBarButton}"
+						        ToolTip.Tip="Список контактов"/>
+						
+						<actipro:ToggleThemeButton 
+							Theme="{actipro:ControlTheme TitleBarToggleThemeButton}"
+							ToolTip.Tip="Сменить тему" />
+					</StackPanel>
+				</primitives:OverlayInputFilter>
+			</actipro:ChromedTitleBar.RightContent>
+		</actipro:ChromedTitleBar>
+	
+	    <primitives:OverlayInputFilter>
+		    <Grid>
+			    <actipro:WindowResizeGrip/>
+			    
+			    <StackPanel HorizontalAlignment="Right" VerticalAlignment="Top" ZIndex="99">
+				    <actipro:InfoBar Severity="{Binding StatusInfoBar}" Title="{Binding TitleTextInfoBar}" IsVisible="{Binding IsInfoBarVisible}"
+				                     Message="{Binding MessageInfoBar}" IsWrapped="True" HorizontalAlignment="Right" 
+				                     VerticalAlignment="Top" Margin="20" CanClose="False">
+				    </actipro:InfoBar>        
+			    </StackPanel>
+			    
+			    <Border>
+				    <ContentControl Content="{Binding CurrentView}"/>
+			    </Border>
+		    </Grid>
+	    </primitives:OverlayInputFilter>
+	</DockPanel>
+</Window>
